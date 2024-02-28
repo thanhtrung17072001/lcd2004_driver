@@ -220,6 +220,17 @@ int lcd2004_probe(struct i2c_client *client)
 int lcd2004_remove(struct i2c_client *client)
 {
     pr_info("lcd2004 device is removed\n");
+    struct device *dev = &client->dev;
+    int ret; 
+
+    ret = lcd2004_send_ctrl_cmd(client, CLEAR_DISPLAY);
+    if(ret)
+        dev_info(dev, "Clear display failed\n");
+
+    ret = lcd2004_send_ctrl_cmd(client, CURSOR_OFF);
+    if(ret)
+        dev_info(dev, "Cursor off failed\n");
+
     return 0;
 }
 
